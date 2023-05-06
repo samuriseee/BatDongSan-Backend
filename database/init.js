@@ -144,7 +144,8 @@ connection.query(
       SDT VARCHAR(20),
       Email VARCHAR(255) NOT NULL UNIQUE,
       Password VARCHAR(255) NOT NULL UNIQUE,
-      role nvarchar(20) NOT NULL,
+      salt VARCHAR(255) NOT NULL,
+      role nvarchar(20) NOT NULL
     )`,
   (err, result) => {
     if (err) throw err;
@@ -199,5 +200,114 @@ connection.query(
   (err, result) => {
     if (err) throw err;
     console.log("Table DatLich đã được tạo!");
+  }
+);
+
+// Loại 1: Nhà [Bán nhà riêng (giấy tờ, nội thất, pn, p tắm, tầng, nhà, ban công, đường vào, mặt tiền)
+//   Bán nhà biệt thự, liền kề ( Bán nhà riêng)
+//   Bán nhà mặt phố (Bán nhà riêng)
+//   Bán shophouse, nhà phố thương mại (Bán nhà riêng)
+//   Bán trang trại, khu nghỉ dưỡng
+//   Cho thuê nhà riêng (Bán nhà riêng)
+//   Cho thuê nhà biệt thự liền kề (Bán nhà riêng)
+//   Cho thuê nhà mặt phố
+//   Cho thuê shophouse, nhà phố thương mại
+//   Cho thuê nhà trọ, phòng trọ
+//   Cho thuê các loại bất động sản khác]
+
+connection.query(
+  `
+  INSERT INTO LoaiBDS (LoaiBDS, DacDiem, DangThongTin, BanHayChoThue) 
+  VALUES 
+  ('Bán nhà riêng', 'Nhà riêng', 'Nhà', 1),
+  ('Bán nhà biệt thự, liền kề', 'Nhà biệt thự, liền kề', 'Nhà', 1),
+  ('Bán nhà mặt phố', 'Nhà mặt phố', 'Nhà', 1),
+  ('Bán shophouse, nhà phố thương mại', 'Shophouse, nhà phố thương mại', 'Nhà', 1),
+  ('Bán trang trại, khu nghỉ dưỡng', 'Trang trại, khu nghỉ dưỡng', 'Nhà', 1),
+  ('Cho thuê nhà riêng', 'Nhà riêng', 'Nhà', 0),
+  ('Cho thuê nhà biệt thự liền kề', 'Nhà biệt thự, liền kề', 'Nhà', 0),
+  ('Cho thuê nhà mặt phố', 'Nhà mặt phố', 'Nhà', 0),
+  ('Cho thuê shophouse, nhà phố thương mại', 'Shophouse, nhà phố thương mại', 'Nhà', 0),
+  ('Cho thuê nhà trọ, phòng trọ', 'Nhà trọ, phòng trọ', 'Nhà', 0)
+
+`,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert Loại bất động sản 1!");
+  }
+);
+
+// Loại 2: Kho [Cho thuê kho, nhà xưởng, đất (Bán kho),Bán kho, nhà xưởng ( giấy tờ, nội thất, phòng tắm, hướng nhà, đường vào, mặt tiền)]
+connection.query(
+  `
+  INSERT INTO LoaiBDS (LoaiBDS, DacDiem, DangThongTin, BanHayChoThue)
+  VALUES
+  ('Cho thuê kho, nhà xưởng, đất', 'Kho, nhà xưởng, đất', 'Kho', 0),
+  ('Bán kho, nhà xưởng', 'Kho, nhà xưởng', 'Kho', 1)
+`,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert Loại bất động sản 2!");
+  }
+);
+
+// Loại 3: Đất [Bán đất nền dự án (Giấy tờ pháp lý, Hướng nhà, đường vào, mặt tiền)
+//   Bán đất (y trên)]
+connection.query(
+  `
+  INSERT INTO LoaiBDS (LoaiBDS, DacDiem, DangThongTin, BanHayChoThue)
+  VALUES
+  ('Bán đất nền dự án', 'Đất nền dự án', 'Đất', 1),
+  ('Bán đất', 'Đất', 'Đất', 1)
+`,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert Loại bất động sản 3!");
+  }
+);
+
+// Loại 4: Văn phòng [Cho thuê văn phòng ( Giầy tờ, Nội thất, Phòng tắm, tầng, Hướng nhà, ban công, đường vào, mặt tiền)
+//   Cho thuê, sang nhượng cửa hàng, ki ốt]
+connection.query(
+  `
+  INSERT INTO LoaiBDS (LoaiBDS, DacDiem, DangThongTin, BanHayChoThue)
+  VALUES
+  ('Cho thuê văn phòng', 'Văn phòng', 'Văn phòng', 0),
+  ('Cho thuê, sang nhượng cửa hàng, ki ốt', 'Cửa hàng, ki ốt', 'Văn phòng', 0)
+`,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert Loại bất động sản 4!");
+  }
+);
+
+// Loại 5: Căn hộ [Bán
+//   Bán căn hộ chung cư (Giấy tờ pháp lý, Nội thất, Phòng ngủ, Tắm, hướng nhà, hướng ban công)
+//   Bán condotel
+//   Bán loại bất động sản khác]
+
+connection.query(
+  `
+  INSERT INTO LoaiBDS (LoaiBDS, DacDiem, DangThongTin, BanHayChoThue)
+  VALUES
+  ('Bán căn hộ chung cư', 'Căn hộ chung cư', 'Căn hộ', 1),
+  ('Bán condotel', 'Condotel', 'Căn hộ', 1)
+`,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert Loại bất động sản 5!");
+  }
+);
+
+connection.query(
+  `
+  INSERT INTO LoaiBDS (LoaiBDS, DacDiem, DangThongTin, BanHayChoThue)
+  VALUES
+  ('Bán loại bất động sản khác', 'Khác', 'Căn hộ', 1),
+  ('Cho thuê các loại bất động sản khác', 'Khác', 'Nhà', 0)
+`,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert Loại bất động sản 5!");
   }
 );
