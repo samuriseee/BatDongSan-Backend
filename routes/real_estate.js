@@ -38,4 +38,5 @@ real_estate_router.get("/getAllRentTypes", (req, res) => {
     }
 );
 
+
 module.exports = real_estate_router;

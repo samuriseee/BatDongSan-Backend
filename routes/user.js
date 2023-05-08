@@ -14,6 +14,8 @@ user_router.get("/", (req, res) => {
     }
   });
 });
+
+
 user_router.get("/:id", (req, res) => {
   const id = req.params.id;
   connection.query(
@@ -34,22 +36,18 @@ user_router.get("/:id", (req, res) => {
 
 user_router.delete("/:id", (req, res) => {
   const id = req.params.id;
-  connection.query(
-    "DELETE FROM nguoidung WHERE id = ?",
-    [id],
-    (err, rows) => {
-      if (err) {
-        return res.json({
-          message: "Lỗi",
-        });
-      }
-      if (rows) {
-        return res.json({
-          message: "Xóa thành công",
-        });
-      }
+  connection.query("DELETE FROM nguoidung WHERE id = ?", [id], (err, rows) => {
+    if (err) {
+      return res.json({
+        message: "Lỗi",
+      });
     }
-  );
+    if (rows) {
+      return res.json({
+        message: "Xóa thành công",
+      });
+    }
+  });
 });
 
 module.exports = user_router;
