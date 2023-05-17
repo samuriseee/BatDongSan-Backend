@@ -4,9 +4,10 @@ require("dotenv").config();
 const pool = mysql.createPool({
   connectionLimit: 10, // Set the maximum number of connections in the pool
   host: process.env.HOST || "localhost",
-  user: process.env.USER || "root",
+  user: "root",
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
+  port: 3306,
 });
 
 // Test the connection
