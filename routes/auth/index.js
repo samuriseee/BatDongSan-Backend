@@ -6,6 +6,7 @@ const jsonwebtoken = require("jsonwebtoken");
 
 const connection = require("../../database/connection");
 const authenticateToken = require("../../middleware/authenticateToken");
+const mailService = require("../../services/mail.services");
 require("dotenv").config();
 const secret = process.env.SECRET;
 const {
@@ -84,6 +85,7 @@ authRouter.post("/login", async function (req, res) {
     console.log(error);
   }
 });
+
 authRouter.get("/currentUser", authenticateToken, async function (req, res) {
   const { email } = req.user;
   const sql = "Select * from nguoidung where Email =?";
@@ -102,4 +104,80 @@ authRouter.get("/currentUser", authenticateToken, async function (req, res) {
   }
 });
 
+authRouter.post("/sendEmail", async function (req, res) {
+  const { emailTo, emailSubject, emailText } = req.body;
+  try {
+    mailService.sendEmail({
+      emailFrom: process.env.SMTP_USER,
+      emailTo,
+      emailSubject,
+      emailText,
+    });
+    return res.json({
+      msg: "OK",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      msg: "Không ok lắm he",
+    });
+  }
+});
+
+authRouter.post("/forgot-password", async function (req, res) {
+  const { email } = req.body;
+  const sql = "Select * from nguoidung where Email =?";
+  try {
+    const user = await getOne({ db: connection, query: sql, params: [email] });
+    if (!user) {
+      return res.status(404).json({
+        message: "Tài khoản không tồn tại",
+      });
+    }
+    const token = jsonwebtoken.sign(
+      {
+        id: user.id,
+        email: user.Email,
+        role: user.role,
+      },
+      secret,
+      { expiresIn: "1h" }
+    );
+    const link = `http://localhost:3000/#/reset-password/${token}`;
+    const emailText = `Click vào link này để reset password: ${link}`;
+    mailService.sendEmail({
+      emailFrom: process.env.SMTP_USER,
+      emailTo: user.Email,
+      emailSubject: "Reset password",
+      emailText,
+    });
+    return res.status(200).json({
+      message: "Vui lòng kiểm tra email để reset password",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+authRouter.post("/resetPassword", async function (req, res) {
+  const { Email, newPassword } = req.body;
+  const { encyptedPassword, salt } = hashPassword(newPassword);
+  const sql = "UPDATE nguoidung SET Password = ?, salt = ? WHERE Email = ?";
+  try {
+    const user = await executeQuery({
+      db: connection,
+      query: sql,
+      params: [encyptedPassword, salt, Email],
+    });
+    if (!user) {
+      return res.status(404).json({
+        message: "Tài khoản không tồn tại",
+      });
+    }
+    return res.status(200).json({
+      message: "Thay đổi mật khẩu thành công",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 module.exports = authRouter;

@@ -16,6 +16,7 @@ app.use("/user", user_router);
 app.use("/auth", auth_router);
 app.use("/post", post_router);
 app.use("/real_estate", real_estate_router);
+app.use("/post", post_router);
 
 
 
