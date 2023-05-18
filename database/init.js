@@ -311,3 +311,121 @@ connection.query(
     console.log("Đã insert Loại bất động sản 5!");
   }
 );
+
+connection.query(
+  `
+INSERT INTO ThanhPho (ThanhPho) VALUES
+('Hà Nội'),
+('Hồ Chí Minh'),
+('Đà Nẵng'),
+('Huế'),
+('Nha Trang'),
+('Vũng Tàu'),
+('Hải Phòng'),
+('Cần Thơ'),
+('Đồng Nai'),
+('Bình Dương'),
+('Long An'),
+('Hải Dương'),
+('Quảng Ninh'),
+('Nam Định'),
+('Thanh Hóa'),
+('Ninh Bình'),
+('Bắc Ninh'),
+('Thái Bình'),
+('Quảng Bình'),
+('Quảng Trị');
+  `,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert ThanhPho");
+  }
+);
+
+
+connection.query(
+  `INSERT INTO QuanHuyen (QuanHuyen, IDThanhPho) VALUES
+  ('Quận 1', 1),
+  ('Quận 2', 1),
+  ('Quận 3', 1),
+  ('Quận 4', 1),
+  ('Quận 5', 1),
+  ('Quận 6', 1),
+  ('Quận 7', 1),
+  ('Quận 8', 1),
+  ('Quận 9', 1),
+  ('Quận 10', 1),
+  ('Quận 11', 1),
+  ('Quận 12', 1),
+  ('Quận Gò Vấp', 2),
+  ('Quận Tân Bình', 2),
+  ('Quận Bình Thạnh', 2),
+  ('Quận Phú Nhuận', 2),
+  ('Quận Thủ Đức', 2),
+  ('Quận Bình Tân', 2),
+  ('Quận Tân Phú', 2),
+  ('Huyện Củ Chi', 2);
+  `,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert QuanHuyen");
+  }
+);
+
+connection.query(
+  `INSERT INTO PhuongXa (PhuongXa, IDQuanHuyen) VALUES
+  ('Phường 1', 1),
+  ('Phường 2', 1),
+  ('Phường 3', 1),
+  ('Phường 4', 1),
+  ('Phường 5', 1),
+  ('Phường 6', 1),
+  ('Phường 7', 1),
+  ('Phường 8', 1),
+  ('Phường 9', 1),
+  ('Phường 10', 1),
+  ('Phường 11', 1),
+  ('Phường 12', 1),
+  ('Phường Gò Vấp', 13),
+  ('Phường Tân Bình', 13),
+  ('Phường Bình Thạnh', 14),
+  ('Phường Phú Nhuận', 14),
+  ('Phường Thủ Đức', 15),
+  ('Phường Bình Tân', 16),
+  ('Phường Tân Phú', 17),
+  ('Xã Củ Chi', 20);
+  `,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert PhuongXa");
+  }
+);
+
+connection.query(
+  `INSERT INTO Duong (Duong, IDPhuongXa) VALUES
+  ('Đường Lê Lợi', 1),
+  ('Đường Nguyễn Huệ', 1),
+  ('Đường Hai Bà Trưng', 1),
+  ('Đường Đề Thám', 2),
+  ('Đường Trần Hưng Đạo', 2),
+  ('Đường Phan Đình Phùng', 3),
+  ('Đường Lý Tự Trọng', 3),
+  ('Đường Nam Kỳ Khởi Nghĩa', 4),
+  ('Đường Võ Văn Kiệt', 4),
+  ('Đường Nguyễn Văn Cừ', 5),
+  ('Đường Nguyễn Thị Minh Khai', 5),
+  ('Đường Trần Phú', 6),
+  ('Đường Lê Hồng Phong', 6),
+  ('Đường Nguyễn Đình Chiểu', 7),
+  ('Đường Cao Thắng', 7),
+  ('Đường Nguyễn Văn Linh', 8),
+  ('Đường Tôn Đức Thắng', 8),
+  ('Đường Lý Thường Kiệt', 9),
+  ('Đường Nguyễn Bỉnh Khiêm', 9);
+  `,
+  (err, result) => {
+    if (err) throw err;
+    console.log("Đã insert Duong");
+  }
+);
+
