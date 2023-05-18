@@ -6,6 +6,7 @@ connection = mysql.createConnection({
   user: process.env.USER || "root",
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
+  port: 3333,
 });
 connection.connect((err) => {
   if (err) throw err;
