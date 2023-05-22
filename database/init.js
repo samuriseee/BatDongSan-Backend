@@ -1,68 +1,68 @@
 const connection = require("./connection");
 
-connection.query(
-  `CREATE TABLE if not exists ThanhPho (
-      ID INT AUTO_INCREMENT PRIMARY KEY ,
-      ThanhPho NVARCHAR(255)
-    )`,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Table ThanhPho đã được tạo!");
-  }
-);
+// connection.query(
+//   `CREATE TABLE if not exists ThanhPho (
+//       ID INT AUTO_INCREMENT PRIMARY KEY ,
+//       ThanhPho NVARCHAR(255)
+//     )`,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Table ThanhPho đã được tạo!");
+//   }
+// );
 
-connection.query(
-  `CREATE TABLE if not exists QuanHuyen (
-      ID INT AUTO_INCREMENT PRIMARY KEY,
-      QuanHuyen NVARCHAR(255),
-      IDThanhPho INT,
-      FOREIGN KEY (IDThanhPho) REFERENCES ThanhPho(ID)
-    )`,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Table QuanHuyen đã được tạo!");
-  }
-);
+// connection.query(
+//   `CREATE TABLE if not exists QuanHuyen (
+//       ID INT AUTO_INCREMENT PRIMARY KEY,
+//       QuanHuyen NVARCHAR(255),
+//       IDThanhPho INT,
+//       FOREIGN KEY (IDThanhPho) REFERENCES ThanhPho(ID)
+//     )`,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Table QuanHuyen đã được tạo!");
+//   }
+// );
 
-connection.query(
-  `CREATE TABLE if not exists PhuongXa (
-      ID INT AUTO_INCREMENT PRIMARY KEY,
-      PhuongXa NVARCHAR(255),
-      IDQuanHuyen INT,
-      foreign key (IDQuanHuyen) references QuanHuyen(ID)
-    )`,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Table PhuongXa đã được tạo!");
-  }
-);
+// connection.query(
+//   `CREATE TABLE if not exists PhuongXa (
+//       ID INT AUTO_INCREMENT PRIMARY KEY,
+//       PhuongXa NVARCHAR(255),
+//       IDQuanHuyen INT,
+//       foreign key (IDQuanHuyen) references QuanHuyen(ID)
+//     )`,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Table PhuongXa đã được tạo!");
+//   }
+// );
 
-connection.query(
-  `CREATE TABLE if not exists Duong (
-      ID INT AUTO_INCREMENT PRIMARY KEY,
-      Duong NVARCHAR(255),
-      IDPhuongXa INT,
-      FOREIGN KEY (IDPhuongXa) REFERENCES PhuongXa(ID)
-    )`,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Table Duong đã được tạo!");
-  }
-);
+// connection.query(
+//   `CREATE TABLE if not exists Duong (
+//       ID INT AUTO_INCREMENT PRIMARY KEY,
+//       Duong NVARCHAR(255),
+//       IDPhuongXa INT,
+//       FOREIGN KEY (IDPhuongXa) REFERENCES PhuongXa(ID)
+//     )`,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Table Duong đã được tạo!");
+//   }
+// );
 
-connection.query(
-  `CREATE TABLE if not exists DiaChiCuThe (
-      ID INT AUTO_INCREMENT PRIMARY KEY,
-      DiaChi NVARCHAR(255),
-      IDDuong INT,
-      LinkGoogleMap LONGTEXT,
-      FOREIGN KEY (IDDuong) REFERENCES Duong(ID)
-    )`,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Table DiaChiCuThe đã được tạo!");
-  }
-);
+// connection.query(
+//   `CREATE TABLE if not exists DiaChiCuThe (
+//       ID INT AUTO_INCREMENT PRIMARY KEY,
+//       DiaChi NVARCHAR(255),
+//       IDDuong INT,
+//       LinkGoogleMap LONGTEXT,
+//       FOREIGN KEY (IDDuong) REFERENCES Duong(ID)
+//     )`,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Table DiaChiCuThe đã được tạo!");
+//   }
+// );
 
 connection.query(
   `CREATE TABLE if not exists LoaiBDS (
@@ -109,8 +109,6 @@ connection.query(
   `CREATE TABLE if not exists BatDongSan (
       ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
       LoaiBDS INT,
-      DiaChi TEXT,
-      IDDiaChi INT,
       TieuDe TEXT,
       MoTa LONGTEXT,
       DienTich FLOAT,
@@ -127,7 +125,6 @@ connection.query(
       MatTien FLOAT,
       HinhAnh LONGTEXT,
       TrangThaiXacThuc bit,
-      FOREIGN KEY (IDDiaChi) REFERENCES DiaChiCuThe(ID),
       FOREIGN KEY (LoaiBDS) REFERENCES LoaiBDS(ID)
     )`,
   (err, result) => {
@@ -157,6 +154,10 @@ connection.query(
       ID INT AUTO_INCREMENT PRIMARY KEY,
       IDbatDongSan INT,
       IDNguoiDung INT,
+      ThanhPho NVARCHAR(100),
+      QuanHuyen NVARCHAR(100),
+      PhuongXa NVARCHAR(100),
+      DiaChiCuThe NVARCHAR(100),
       TrangThai NVARCHAR(20),
       NgayDang DATE,
       NgayHetHan DATE,
@@ -217,7 +218,7 @@ connection.query(
 
 connection.query(
   `
-  INSERT INTO LoaiBDS (LoaiBDS, DacDiem, DangThongTin, BanHayChoThue) 
+  INSERT INTO loaiBDS (LoaiBDS, DacDiem, DangThongTin, BanHayChoThue) 
   VALUES 
   ('Bán nhà riêng', 'Nhà riêng', 'Nhà', 1),
   ('Bán nhà biệt thự, liền kề', 'Nhà biệt thự, liền kề', 'Nhà', 1),
@@ -312,120 +313,118 @@ connection.query(
   }
 );
 
-connection.query(
-  `
-INSERT INTO ThanhPho (ThanhPho) VALUES
-('Hà Nội'),
-('Hồ Chí Minh'),
-('Đà Nẵng'),
-('Huế'),
-('Nha Trang'),
-('Vũng Tàu'),
-('Hải Phòng'),
-('Cần Thơ'),
-('Đồng Nai'),
-('Bình Dương'),
-('Long An'),
-('Hải Dương'),
-('Quảng Ninh'),
-('Nam Định'),
-('Thanh Hóa'),
-('Ninh Bình'),
-('Bắc Ninh'),
-('Thái Bình'),
-('Quảng Bình'),
-('Quảng Trị');
-  `,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Đã insert ThanhPho");
-  }
-);
+// connection.query(
+//   `
+// INSERT INTO ThanhPho (ThanhPho) VALUES
+// ('Hà Nội'),
+// ('Hồ Chí Minh'),
+// ('Đà Nẵng'),
+// ('Huế'),
+// ('Nha Trang'),
+// ('Vũng Tàu'),
+// ('Hải Phòng'),
+// ('Cần Thơ'),
+// ('Đồng Nai'),
+// ('Bình Dương'),
+// ('Long An'),
+// ('Hải Dương'),
+// ('Quảng Ninh'),
+// ('Nam Định'),
+// ('Thanh Hóa'),
+// ('Ninh Bình'),
+// ('Bắc Ninh'),
+// ('Thái Bình'),
+// ('Quảng Bình'),
+// ('Quảng Trị');
+//   `,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Đã insert ThanhPho");
+//   }
+// );
 
+// connection.query(
+//   `INSERT INTO QuanHuyen (QuanHuyen, IDThanhPho) VALUES
+//   ('Quận 1', 1),
+//   ('Quận 2', 1),
+//   ('Quận 3', 1),
+//   ('Quận 4', 1),
+//   ('Quận 5', 1),
+//   ('Quận 6', 1),
+//   ('Quận 7', 1),
+//   ('Quận 8', 1),
+//   ('Quận 9', 1),
+//   ('Quận 10', 1),
+//   ('Quận 11', 1),
+//   ('Quận 12', 1),
+//   ('Quận Gò Vấp', 2),
+//   ('Quận Tân Bình', 2),
+//   ('Quận Bình Thạnh', 2),
+//   ('Quận Phú Nhuận', 2),
+//   ('Quận Thủ Đức', 2),
+//   ('Quận Bình Tân', 2),
+//   ('Quận Tân Phú', 2),
+//   ('Huyện Củ Chi', 2);
+//   `,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Đã insert QuanHuyen");
+//   }
+// );
 
-connection.query(
-  `INSERT INTO QuanHuyen (QuanHuyen, IDThanhPho) VALUES
-  ('Quận 1', 1),
-  ('Quận 2', 1),
-  ('Quận 3', 1),
-  ('Quận 4', 1),
-  ('Quận 5', 1),
-  ('Quận 6', 1),
-  ('Quận 7', 1),
-  ('Quận 8', 1),
-  ('Quận 9', 1),
-  ('Quận 10', 1),
-  ('Quận 11', 1),
-  ('Quận 12', 1),
-  ('Quận Gò Vấp', 2),
-  ('Quận Tân Bình', 2),
-  ('Quận Bình Thạnh', 2),
-  ('Quận Phú Nhuận', 2),
-  ('Quận Thủ Đức', 2),
-  ('Quận Bình Tân', 2),
-  ('Quận Tân Phú', 2),
-  ('Huyện Củ Chi', 2);
-  `,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Đã insert QuanHuyen");
-  }
-);
+// connection.query(
+//   `INSERT INTO PhuongXa (PhuongXa, IDQuanHuyen) VALUES
+//   ('Phường 1', 1),
+//   ('Phường 2', 1),
+//   ('Phường 3', 1),
+//   ('Phường 4', 1),
+//   ('Phường 5', 1),
+//   ('Phường 6', 1),
+//   ('Phường 7', 1),
+//   ('Phường 8', 1),
+//   ('Phường 9', 1),
+//   ('Phường 10', 1),
+//   ('Phường 11', 1),
+//   ('Phường 12', 1),
+//   ('Phường Gò Vấp', 13),
+//   ('Phường Tân Bình', 13),
+//   ('Phường Bình Thạnh', 14),
+//   ('Phường Phú Nhuận', 14),
+//   ('Phường Thủ Đức', 15),
+//   ('Phường Bình Tân', 16),
+//   ('Phường Tân Phú', 17),
+//   ('Xã Củ Chi', 20);
+//   `,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Đã insert PhuongXa");
+//   }
+// );
 
-connection.query(
-  `INSERT INTO PhuongXa (PhuongXa, IDQuanHuyen) VALUES
-  ('Phường 1', 1),
-  ('Phường 2', 1),
-  ('Phường 3', 1),
-  ('Phường 4', 1),
-  ('Phường 5', 1),
-  ('Phường 6', 1),
-  ('Phường 7', 1),
-  ('Phường 8', 1),
-  ('Phường 9', 1),
-  ('Phường 10', 1),
-  ('Phường 11', 1),
-  ('Phường 12', 1),
-  ('Phường Gò Vấp', 13),
-  ('Phường Tân Bình', 13),
-  ('Phường Bình Thạnh', 14),
-  ('Phường Phú Nhuận', 14),
-  ('Phường Thủ Đức', 15),
-  ('Phường Bình Tân', 16),
-  ('Phường Tân Phú', 17),
-  ('Xã Củ Chi', 20);
-  `,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Đã insert PhuongXa");
-  }
-);
-
-connection.query(
-  `INSERT INTO Duong (Duong, IDPhuongXa) VALUES
-  ('Đường Lê Lợi', 1),
-  ('Đường Nguyễn Huệ', 1),
-  ('Đường Hai Bà Trưng', 1),
-  ('Đường Đề Thám', 2),
-  ('Đường Trần Hưng Đạo', 2),
-  ('Đường Phan Đình Phùng', 3),
-  ('Đường Lý Tự Trọng', 3),
-  ('Đường Nam Kỳ Khởi Nghĩa', 4),
-  ('Đường Võ Văn Kiệt', 4),
-  ('Đường Nguyễn Văn Cừ', 5),
-  ('Đường Nguyễn Thị Minh Khai', 5),
-  ('Đường Trần Phú', 6),
-  ('Đường Lê Hồng Phong', 6),
-  ('Đường Nguyễn Đình Chiểu', 7),
-  ('Đường Cao Thắng', 7),
-  ('Đường Nguyễn Văn Linh', 8),
-  ('Đường Tôn Đức Thắng', 8),
-  ('Đường Lý Thường Kiệt', 9),
-  ('Đường Nguyễn Bỉnh Khiêm', 9);
-  `,
-  (err, result) => {
-    if (err) throw err;
-    console.log("Đã insert Duong");
-  }
-);
-
+// connection.query(
+//   `INSERT INTO Duong (Duong, IDPhuongXa) VALUES
+//   ('Đường Lê Lợi', 1),
+//   ('Đường Nguyễn Huệ', 1),
+//   ('Đường Hai Bà Trưng', 1),
+//   ('Đường Đề Thám', 2),
+//   ('Đường Trần Hưng Đạo', 2),
+//   ('Đường Phan Đình Phùng', 3),
+//   ('Đường Lý Tự Trọng', 3),
+//   ('Đường Nam Kỳ Khởi Nghĩa', 4),
+//   ('Đường Võ Văn Kiệt', 4),
+//   ('Đường Nguyễn Văn Cừ', 5),
+//   ('Đường Nguyễn Thị Minh Khai', 5),
+//   ('Đường Trần Phú', 6),
+//   ('Đường Lê Hồng Phong', 6),
+//   ('Đường Nguyễn Đình Chiểu', 7),
+//   ('Đường Cao Thắng', 7),
+//   ('Đường Nguyễn Văn Linh', 8),
+//   ('Đường Tôn Đức Thắng', 8),
+//   ('Đường Lý Thường Kiệt', 9),
+//   ('Đường Nguyễn Bỉnh Khiêm', 9);
+//   `,
+//   (err, result) => {
+//     if (err) throw err;
+//     console.log("Đã insert Duong");
+//   }
+// );
